@@ -1,0 +1,15 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\proj\android\app\src\main\AndroidManifest.xml:2:1-40:12
+MERGED from [:some_plugin] C:\proj\build\some_plugin\AndroidManifest.xml:2:1-12:12
+uses-permission#android.permission.INTERNET
+ADDED from D:\proj\android\app\src\main\AndroidManifest.xml:4:5-67
+uses-permission#android.permission.READ_PHONE_STATE
+ADDED from [:some_plugin] C:\proj\build\some_plugin\AndroidManifest.xml:5:5-75
+	MERGED from [:other_plugin] C:\proj\build\other_plugin\AndroidManifest.xml:6:5-75
+uses-permission#android.permission.ACCESS_BACKGROUND_LOCATION
+ADDED from D:\proj\android\app\src\main\AndroidManifest.xml:7:5-85
+service#com.baseflow.geolocator.GeolocatorLocationService
+ADDED from [:geolocator_android] C:\proj\build\geolocator_android\AndroidManifest.xml:12:9-16:56
+receiver#com.example.demo.AdminReceiver
+ADDED from [androidx.core:core:1.12.0] C:\Users\x\.gradle\caches\AndroidManifest.xml:9:9-30

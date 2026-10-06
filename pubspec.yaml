@@ -1,6 +1,6 @@
 name: perm_audit
 description: Audits the final merged Android manifest of a Flutter app and reports sensitive permissions, services, and which dependency added them.
-version: 0.1.0
+version: 0.1.1
 repository: https://github.com/sujalrabadiyab/perm_audit
 issue_tracker: https://github.com/sujalrabadiyab/perm_audit/issues
 topics:
