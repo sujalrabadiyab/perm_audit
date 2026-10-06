@@ -1,4 +1,3 @@
-
 // Flags sensitive/restricted Android permissions in the FINAL (merged) manifest
 // of a Flutter/Android app and shows which dependency added each one.
 //
@@ -21,33 +20,63 @@ const watchlist = <String, List<String>>{
   'Location': ['ACCESS_BACKGROUND_LOCATION'],
   'Contacts & accounts': ['READ_CONTACTS', 'WRITE_CONTACTS', 'GET_ACCOUNTS'],
   'Phone & calls': [
-    'READ_PHONE_STATE', 'READ_PHONE_NUMBERS', 'CALL_PHONE', 'ANSWER_PHONE_CALLS',
-    'READ_CALL_LOG', 'WRITE_CALL_LOG', 'PROCESS_OUTGOING_CALLS', 'ADD_VOICEMAIL',
-    'USE_SIP', 'ACCEPT_HANDOVER',
+    'READ_PHONE_STATE',
+    'READ_PHONE_NUMBERS',
+    'CALL_PHONE',
+    'ANSWER_PHONE_CALLS',
+    'READ_CALL_LOG',
+    'WRITE_CALL_LOG',
+    'PROCESS_OUTGOING_CALLS',
+    'ADD_VOICEMAIL',
+    'USE_SIP',
+    'ACCEPT_HANDOVER',
   ],
-  'SMS': ['SEND_SMS', 'RECEIVE_SMS', 'READ_SMS', 'RECEIVE_WAP_PUSH', 'RECEIVE_MMS'],
+  'SMS': [
+    'SEND_SMS',
+    'RECEIVE_SMS',
+    'READ_SMS',
+    'RECEIVE_WAP_PUSH',
+    'RECEIVE_MMS'
+  ],
   'Calendar': ['READ_CALENDAR', 'WRITE_CALENDAR'],
   'Storage & media': [
-    'READ_MEDIA_IMAGES', 'READ_MEDIA_VIDEO', 'READ_MEDIA_AUDIO',
-    'READ_MEDIA_VISUAL_USER_SELECTED', 'MANAGE_EXTERNAL_STORAGE',
+    'READ_MEDIA_IMAGES',
+    'READ_MEDIA_VIDEO',
+    'READ_MEDIA_AUDIO',
+    'READ_MEDIA_VISUAL_USER_SELECTED',
+    'MANAGE_EXTERNAL_STORAGE',
   ],
-  'Sensors & activity': ['BODY_SENSORS', 'BODY_SENSORS_BACKGROUND', 'ACTIVITY_RECOGNITION'],
+  'Sensors & activity': [
+    'BODY_SENSORS',
+    'BODY_SENSORS_BACKGROUND',
+    'ACTIVITY_RECOGNITION'
+  ],
   'Special / restricted': [
-    'SYSTEM_ALERT_WINDOW', 'REQUEST_INSTALL_PACKAGES', 'QUERY_ALL_PACKAGES',
-    'BIND_ACCESSIBILITY_SERVICE', 'BIND_DEVICE_ADMIN', 'WRITE_SETTINGS',
-    'SCHEDULE_EXACT_ALARM', 'USE_EXACT_ALARM', 'USE_FULL_SCREEN_INTENT',
-    'PACKAGE_USAGE_STATS', 'READ_LOGS',
+    'SYSTEM_ALERT_WINDOW',
+    'REQUEST_INSTALL_PACKAGES',
+    'QUERY_ALL_PACKAGES',
+    'BIND_ACCESSIBILITY_SERVICE',
+    'BIND_DEVICE_ADMIN',
+    'WRITE_SETTINGS',
+    'SCHEDULE_EXACT_ALARM',
+    'USE_EXACT_ALARM',
+    'USE_FULL_SCREEN_INTENT',
+    'PACKAGE_USAGE_STATS',
+    'READ_LOGS',
   ],
 };
 
 // FOREGROUND_SERVICE_* (all types) matched by prefix.
-const prefixWatch = {'Special / restricted': ['FOREGROUND_SERVICE_']};
+const prefixWatch = {
+  'Special / restricted': ['FOREGROUND_SERVICE_']
+};
 
 // Normally declared as android:permission="..." on a <service>/<receiver>.
 const componentPerms = {'BIND_ACCESSIBILITY_SERVICE', 'BIND_DEVICE_ADMIN'};
 
 final lookup = {
-  for (final e in watchlist.entries) for (final n in e.value) n: e.key,
+  for (final e in watchlist.entries)
+    for (final n in e.value) n: e.key,
 };
 
 String short(String n) => n.split('.').last;
@@ -62,9 +91,9 @@ String? classify(String name) {
 }
 
 Map<String, String> attrs(String raw) => {
-  for (final m in RegExp(r'([\w:.\-]+)\s*=\s*"([^"]*)"').allMatches(raw))
-    m.group(1)!: m.group(2)!,
-};
+      for (final m in RegExp(r'([\w:.\-]+)\s*=\s*"([^"]*)"').allMatches(raw))
+        m.group(1)!: m.group(2)!,
+    };
 
 /// Maps "uses-permission#android.permission.X" -> contributing sources.
 Map<String, Set<String>> parseReport(File f) {
@@ -122,20 +151,33 @@ void main(List<String> argv) {
   var fail = false;
   for (var i = 0; i < argv.length; i++) {
     switch (argv[i]) {
-      case '--project': project = argv[++i]; break;
-      case '--variant': variant = argv[++i]; break;
-      case '--manifest': manifestPath = argv[++i]; break;
-      case '--report': reportPath = argv[++i]; break;
-      case '--json': jsonPath = argv[++i]; break;
-      case '--fail': fail = true; break;
+      case '--project':
+        project = argv[++i];
+        break;
+      case '--variant':
+        variant = argv[++i];
+        break;
+      case '--manifest':
+        manifestPath = argv[++i];
+        break;
+      case '--report':
+        reportPath = argv[++i];
+        break;
+      case '--json':
+        jsonPath = argv[++i];
+        break;
+      case '--fail':
+        fail = true;
+        break;
       default:
         stderr.writeln('Unknown option: ${argv[i]}');
         exit(2);
     }
   }
 
-  final manifest =
-  manifestPath != null ? File(manifestPath) : findManifest(project, variant);
+  final manifest = manifestPath != null
+      ? File(manifestPath)
+      : findManifest(project, variant);
   if (manifest == null || !manifest.existsSync()) {
     stderr.writeln('Merged manifest not found. Run '
         '"flutter build apk --$variant" first, or pass --manifest.');
@@ -145,8 +187,9 @@ void main(List<String> argv) {
       '$project/build/app/outputs/logs/manifest-merger-$variant-report.txt');
   final sources = parseReport(report);
 
-  final xml =
-  manifest.readAsStringSync().replaceAll(RegExp(r'<!--.*?-->', dotAll: true), '');
+  final xml = manifest
+      .readAsStringSync()
+      .replaceAll(RegExp(r'<!--.*?-->', dotAll: true), '');
   final findings = <Map<String, dynamic>>[];
 
   final tagRe = RegExp(
@@ -195,7 +238,8 @@ void main(List<String> argv) {
   }
 
   if (findings.isEmpty) {
-    print('\u2705 None of the watched permissions are present in the final manifest.');
+    print(
+        '\u2705 None of the watched permissions are present in the final manifest.');
     return;
   }
 
